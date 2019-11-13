@@ -1,0 +1,27 @@
+name: Generate Cheat Sheet
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@0b496e91ec7ae4428c3ed2eeb4c3a40df431f2cc
+    - name: Setup Node
+      uses: actions/setup-node@v1
+    - name: NPM CI
+      run: npm ci
+      env:
+        CI: true
+    - name: AsciiDoctor-PDF
+      run: npm run generate-pdf
+    - name: Publish 
+      run: |
+        git config --global user.email "actions@github.com"
+        git config --global user.name "Actions"
+        git add .
+        git commit -m 'jekyll build from Actions'
+        git push origin HEAD:master
