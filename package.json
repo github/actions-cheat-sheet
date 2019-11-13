@@ -1,0 +1,29 @@
+{
+  "name": "actions-cheat-sheet",
+  "version": "1.0.0",
+  "description": "A cheat sheet for GitHub Actions",
+  "main": "index.js",
+  "scripts": {
+    "generate-pdf": "asciidoctor-pdf actions-cheat-sheet.adoc --template-require ./theme/template.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/helaili/actions-cheat-sheet.git"
+  },
+  "keywords": [
+    "github",
+    "actions",
+    "cheat",
+    "sheet"
+  ],
+  "author": "Alain Hélaïli",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/helaili/actions-cheat-sheet/issues"
+  },
+  "homepage": "https://github.com/helaili/actions-cheat-sheet#readme",
+  "dependencies": {
+    "@asciidoctor/core": "^2.0.3",
+    "asciidoctor-pdf": "^1.0.0-alpha.3"
+  }
+}

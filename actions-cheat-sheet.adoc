@@ -1,0 +1,62 @@
+= Actions Cheat Sheet
+:page-description: A quick reference for GitHub Actions
+:byline: GitHub Actions give you the flexibility to build automated software development lifecycle workflows. You can write individual tasks, called actions, and combine them to create  custom workflows in your repository. GitHub Actions are automated processes allowing you to build, test, package, release, or deploy any code project on GitHub, but you can also use them to automate any step of your workflow: merging pull requests, assigning labels, triaging issues to name a few.
+:pdf-width: 210mm
+:pdf-height: 297mm
+
+[.page]
+== !
+
+[.column]
+=== !
+==== Workflow Syntax1
+Workflow files use YAML syntax, and must have either a .yml or .yaml file extension. You must store workflow files in the `.github/workflows/` directory of your repository.
+
+==== Workflow Syntax2
+Workflow files use YAML syntax, and must have either a .yml or .yaml file extension. You must store workflow files in the `.github/workflows/` directory of your repository.
+
+==== Workflow Syntax1
+Workflow files use YAML syntax, and must have either a .yml or .yaml file extension. You must store workflow files in the `.github/workflows/` directory of your repository.
+
+==== Workflow Syntax2
+Workflow files use YAML syntax, and must have either a .yml or .yaml file extension. You must store workflow files in the `.github/workflows/` directory of your repository.
+
+[.column]
+=== !
+==== Workflow Syntax3
+Workflow files use YAML syntax, and must have either a .yml or .yaml file extension. You must store workflow files in the `.github/workflows/` directory of your repository.
+
+==== Workflow Syntax4
+Workflow files use YAML syntax, and must have either a .yml or .yaml file extension. You must store workflow files in the `.github/workflows/` directory of your repository.
+
+
+[.header-nth]
+== !
+image::theme/assets/github.png[GitHub Logo,60]
+Actions Cheat Sheet
+
+[.page]
+== !
+
+[.column]
+=== !
+==== Workflow Syntax1
+Workflow files use YAML syntax, and must have either a .yml or .yaml file extension. You must store workflow files in the `.github/workflows/` directory of your repository.
+
+==== Workflow Syntax2
+Workflow files use YAML syntax, and must have either a .yml or .yaml file extension. You must store workflow files in the `.github/workflows/` directory of your repository.
+
+==== Workflow Syntax1
+Workflow files use YAML syntax, and must have either a .yml or .yaml file extension. You must store workflow files in the `.github/workflows/` directory of your repository.
+
+==== Workflow Syntax2
+Workflow files use YAML syntax, and must have either a .yml or .yaml file extension. You must store workflow files in the `.github/workflows/` directory of your repository.
+
+
+[.column]
+=== !
+==== Workflow Syntax3
+Workflow files use YAML syntax, and must have either a .yml or .yaml file extension. You must store workflow files in the `.github/workflows/` directory of your repository.
+
+==== Workflow Syntax4
+Workflow files use YAML syntax, and must have either a .yml or .yaml file extension. You must store workflow files in the `.github/workflows/` directory of your repository.
