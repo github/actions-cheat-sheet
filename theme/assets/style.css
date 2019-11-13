@@ -15,7 +15,8 @@ html, body {
 
 html {
   font-family: 'Inter UI', 'DejaVu Sans', Arial, sans-serif;
-  font-size: 11.5pt;
+  font-size: 9pt;
+  font-weight: 450;
 }
 
 body {
@@ -61,15 +62,50 @@ section.byline div {
 
 h1 {
   font-size: 26pt;
-  margin: 0;
   padding: 0;
   padding-left: 10px;
   font-weight: 400;
 }
 
+h2 {
+  font-weight: 500;
+  color: #4842a5;
+  font-size: 1.4em;
+  font-weight: 800;
+}
 
-h1, h2 {
-  margin-top: 0;
+h3 {
+  font-size: 1.2em;
+  font-weight: 700;
+}
+
+h4, h5 {
+  font-size: 1.1em;
+  font-weight: 800
+}
+
+h1, h2, h3, h4, h5 {
+  margin: 0;
+}
+
+a {
+  color: #4842a5;
+  text-decoration: none;
+}
+
+ul {
+  padding-left: 10px;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+li > p {
+  margin: 0;
+}
+
+p.paragraph {
+  margin-top: 2px;
+  margin-bottom: 2px;
 }
 
 section.content {
@@ -89,10 +125,19 @@ section.content {
   display: flex;
 }
 
+code, .listingblock {
+    background-color: lightgrey;
+}
+
 .column {
   position: relative;
   margin: 0;
   padding: 10px;
+  width: 10cm;
+}
+
+.hide {
+  display: none;
 }
 
 .sect1 > h2 {
@@ -108,32 +153,30 @@ section.content {
 }
 
 .page:nth-of-type(1) {
-  height: 201mm;
+  height: 223mm;
 }
 
 .header-nth {
   position: relative;
-  height: 80px;
+  height: 40px;
   width: 100%;
   background-color: #1C3260;
   display: flex;
   align-items: stretch;
-  padding-top: 30px;
+}
+
+.header-nth .sectionbody {
+  padding-top: 10px;
 }
 
 .header-nth p {
   font-size: 12pt;
   font-weight: 400;
   color: white;
-  display: inline-flex;
-  padding-bottom: 3px;
   padding-left: 5px;
+  padding-top: 1px;
 }
 
-.header-nth .sectionbody {
-  display: flex;
-  align-items: center;
-}
 
 /*
 .header-nth .sectionbody::before {
@@ -141,7 +184,6 @@ section.content {
   display: inline-flex;
   max-inline-size: 60px;
 }
-*/
 
 .footer {
   position: absolute;
@@ -156,20 +198,4 @@ section.content {
     position: relative;
   }
 }
-
-
-h2 {
-  color: #4842a5;
-  font-size: 1.4em;
-  font-weight: 500;
-}
-
-h3 {
-  font-size: 1.1em;
-  font-weight: 500;
-}
-
-a {
-  color: #4842a5;
-  text-decoration: none;
-}
+*/

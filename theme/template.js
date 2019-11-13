@@ -9,7 +9,7 @@ const headerContent = (node) => {
 
 
 module.exports = {
-  paragraph: (node) => `<p class="${node.getRoles().join(' ')}">${node.getContent()}</p>`,
+  paragraph: (node) => `<p class="${node.getRoles().join(' ')} paragraph">${node.getContent()}</p>`,
   document: (node) => `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,6 +28,5 @@ module.exports = {
 <section class="content">
 ${node.getContent()}
 </section>
-<section class="footer"></section>
 </body>`
 }
