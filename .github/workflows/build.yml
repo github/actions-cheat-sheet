@@ -20,8 +20,9 @@ jobs:
       run: npm run generate-pdf
     - name: Publish 
       run: |
+        git checkout ${GITHUB_REF#refs/heads/}
         git config --global user.email "actions@github.com"
         git config --global user.name "Actions"
         git add .
         git commit -m 'jekyll build from Actions'
-        git push origin HEAD:master
+        git push
