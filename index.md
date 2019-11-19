@@ -2,4 +2,4 @@
 permalink: /
 ---
 
-Checkout [the Actions Cheat Sheet](./actions-cheat-sheet.html)
+Checkout the Actions Cheat Sheet [HTML](./actions-cheat-sheet.html) or [PDF](./actions-cheat-sheet.pdf)
