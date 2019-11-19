@@ -1,3 +1,3 @@
 # actions-cheat-sheet
 
-Check the latest [HTML](/actions-cheat-sheet/actions-cheat-sheet.html) or [PDF](/actions-cheat-sheet/actions-cheat-sheet.pdf) version.
+Checkout the Actions Cheat Sheet [HTML](https://helaili.github.io/actions-cheat-sheet/actions-cheat-sheet.html) or [PDF](https://helaili.github.io/actions-cheat-sheet/actions-cheat-sheet.pdf)
