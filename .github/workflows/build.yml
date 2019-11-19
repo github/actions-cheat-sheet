@@ -1,6 +1,9 @@
 name: Generate Cheat Sheet
 
-on: [push]
+on: 
+  push: 
+    paths-ignore:
+    - '*.pdf'
 
 jobs:
   build:
