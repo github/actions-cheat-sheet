@@ -2,8 +2,10 @@ name: Generate Cheat Sheet
 
 on: 
   push: 
+    branches-ignore:
+      - 'master'
     paths-ignore:
-    - '*.pdf'
+      - '*.pdf'
 
 jobs:
   build:
