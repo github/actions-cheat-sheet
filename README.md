@@ -1,3 +1,3 @@
-# actions-cheat-sheet
+# GitHub Actions Cheat Sheet
 
-Checkout the Actions Cheat Sheet [HTML](https://github.github.io/actions-cheat-sheet/actions-cheat-sheet.html) or [PDF](https://github.github.io/actions-cheat-sheet/actions-cheat-sheet.pdf)
+You can checkout the current GitHub Actions Cheat Sheet (2-pager) in [HTML format](https://github.github.io/actions-cheat-sheet/actions-cheat-sheet.html) or [PDF format](https://github.github.io/actions-cheat-sheet/actions-cheat-sheet.pdf)
