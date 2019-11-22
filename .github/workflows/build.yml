@@ -4,8 +4,9 @@ on:
   push: 
     branches-ignore:
       - 'master'
-    paths-ignore:
-      - '*.pdf'
+    paths:
+      - '**.adoc'
+      - 'theme/**'
 
 jobs:
   build:
@@ -27,6 +28,6 @@ jobs:
       run: |
         git config --global user.email "actions@github.com"
         git config --global user.name "Actions"
-        git add actions-cheat-sheet.pdf
+        git add actions-cheat-sheet.*
         git commit -m 'AsciiDoctor-PDF build from Actions'
         git push --force origin HEAD:${GITHUB_REF#refs/heads/}

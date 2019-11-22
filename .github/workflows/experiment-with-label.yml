@@ -1,0 +1,13 @@
+name: Experiment
+
+on:
+  pull_request: 
+    types: [labeled]
+env:
+  message: 'world'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Run a one-line script
+      run: echo Hello, ${message}!
