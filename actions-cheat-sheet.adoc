@@ -1,6 +1,6 @@
 = Actions Cheat Sheet
 :page-description: A quick reference for GitHub Actions
-:byline: GitHub Actions give you the flexibility to build automated software development lifecycle workflows. You can write individual tasks, called actions, and combine them to create  custom workflows in your repository. GitHub Actions are automated processes allowing you to build, test, package, release, or deploy any code project on GitHub, but you can also use them to automate any step of your workflow: merging pull requests, assigning labels, triaging issues to name a few.
+:byline: GitHub Actions give you the flexibility to build automated software development lifecycle workflows. You can write individual tasks, called actions, and combine them to create custom workflows in your repository. GitHub Actions are automated processes allowing you to build, test, package, release, or deploy any code project on GitHub, but you can also use them to automate any step of your workflow: merging pull requests, assigning labels, triaging issues to name a few.
 :pdf-width: 210mm
 :pdf-height: 297mm
 
@@ -10,7 +10,7 @@
 [.column]
 === !
 ==== Workflow Syntax
-Workflow files use YAML syntax, and must have either a .yml or .yaml file extension. You must store workflow files in the `.github/workflows/` directory of your repository.
+Workflow files use YAML syntax, and must have either a .yml or .yaml file extension. You must store workflow files in the `.github/workflows/` directory of your repository. Each different YAML file corresponds to a different workflow.
 
 [source,yaml]
 ----
@@ -58,12 +58,7 @@ The name of the job displayed on GitHub. For example `my_build` or `build`. This
 Identifies any job that must complete successfully before this job will run. It can be a string or array of strings. If a job fails, all jobs that need it are skipped unless the jobs use a conditional statement that causes the job to continue.
 
 ===== `runs-on`
-Inside of the `jobs` collection, this is the type of virtual host machine to run the job on.
-Available virtual machine types are:
-
-- `ubuntu-latest`, `ubuntu-18.04`, or `ubuntu-16.04`
-- `windows-latest`, `windows-2019`, or `windows-2016`
-- `macOS-latest` or `macOS-10.14`
+The type of virtual host machine to run the job on.  Can be either a GitHub or self-hosted runner.  Jobs can also run in user-specified containers (see: `container`). Available virtual machine types are `ubuntu-latest`, `windows-latest`, `macOS-latest` plus some other specific versions for each operating system, in the form of `ubuntu-xx.xx`, `macOS-xx.xx` or `windows-xxxx`.
 
 ===== `container`
 Instead of running directly on a host selected with `runs-on`, a container can run any steps in a job that don't already specify a container. If you have steps that use both script and container actions, the container actions will run as sibling containers on the same network with the same volume mounts. This object has the following attributes: `image`, `env`, `ports`, `volume` and `options`.
@@ -109,10 +104,10 @@ A job contains a sequence of tasks called `steps`. Steps can run commands, run s
 Specify the label to be displayed for this step in GitHub. It's not required but does improve readability in the logs.
 
 ===== `uses`
-Select an action to run as part of a step in your job. You can use an action defined in the same repository as the workflow, a public repository elsewhere on GitHub, or in a published Docker container image.
+Specify an action to run as part of a step in your job. You can use an action defined in the same repository as the workflow, a public repository elsewhere on GitHub, or in a published Docker container image.
 
 ===== `with`
-A map of the input parameters defined by the action. Each input parameter is a key/value pair. Input parameters are prefixed with `INPUT_`, converted to upper case and set as environment variables: the `first_name` parameter will be exposed as the `INPUT_FIRST_NAME` environment variable. Special parameter names are:
+A map of the input parameters defined by the action in its `action.yml` file. Special parameter names are:
 - `args`, a string that defines the inputs passed to a Docker container's `ENTRYPOINT`. It is used in place of the `CMD` instruction in a `Dockerfile`.
 - `entrypoint`, a string that defines or overrides the executable to run as the Docker container's `ENTRYPOINT`.
 
@@ -154,7 +149,7 @@ Default secrets:
 [.column]
 === !
 ===== `run`
-Instead of running an existing action, a command line program can be run using the operating system's shell. Each run keyword represents a new process and shell in the virtual environment. A specific shell can be selected with the `shell` attribute.
+Instead of running an existing action, a command line program can be run using the operating system's shell. Each run keyword represents a new process and shell in the virtual environment. A specific shell can be selected with the `shell` attribute. Multiple commands can be run in a single shell instance using the `|` (pipe) operator.
 
 ===== `if`
 Prevents a step from running unless a condition is met. The value is an expression without the `${{ ... }}` block
