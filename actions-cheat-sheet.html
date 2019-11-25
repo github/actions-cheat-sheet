@@ -11,7 +11,7 @@
   <img class="logo" src="./theme/assets/logo.png"/>
 </header>
 <section class="byline">
-  <div>GitHub Actions give you the flexibility to build automated software development lifecycle workflows. You can write individual tasks, called actions, and combine them to create  custom workflows in your repository. GitHub Actions are automated processes allowing you to build, test, package, release, or deploy any code project on GitHub, but you can also use them to automate any step of your workflow: merging pull requests, assigning labels, triaging issues to name a few.</div>
+  <div>GitHub Actions give you the flexibility to build automated software development lifecycle workflows. You can write individual tasks, called actions, and combine them to create custom workflows in your repository. GitHub Actions are automated processes allowing you to build, test, package, release, or deploy any code project on GitHub, but you can also use them to automate any step of your workflow: merging pull requests, assigning labels, triaging issues to name a few.</div>
 </section>
 <section class="content">
 <div class="sect1 page">
@@ -21,39 +21,74 @@
 <h3 id="_2">!</h3>
 <div class="sect3">
 <h4 id="_workflow_syntax">Workflow Syntax</h4>
-<p class=" paragraph">Workflow files use YAML syntax, and must have either a .yml or .yaml file extension. You must store workflow files in the <code>.github/workflows/</code> directory of your repository.</p>
+<p class=" paragraph">Workflow files use YAML syntax, and must have either a .yml or .yaml file extension. You must store workflow files in the <code>.github/workflows/</code> directory of your repository. Each different YAML file corresponds to a different workflow.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml">name: Node CI
-on: push
-  branches:
-    - 'releases/*'
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">name: My Workflow
+on:
+  push:
+    branches:
+      - 'releases/*'
+      - '!releases/**-alpha'
+env:
+  message: 'conversation'
+  my_token: ${{ secrets.GITHUB_TOKEN }}
 jobs:
   my_build:
     runs-on: ubuntu-latest
-    needs: my-other-job
     steps:
-    - uses: actions/checkout@master
-    - name: Say something
-      run: echo "A little bit more action"</code></pre>
+      - name: Checking out our code
+        uses: actions/checkout@master
+      - name: Say something
+        run: |
+          echo "A little less ${message}"
+          echo "A little more action"
+  my_job:
+    needs: my_build
+    container:
+      image: node:10.16-jessie
+      env:
+        NODE_ENV: development
+      ports:
+        - 80
+      volumes:
+        - my_docker_volume:/volume_mount
+      options: --cpus 1
+    services:
+      redis:
+        image: redis
+        ports:
+          - 6379/tcp</code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_workflow_name">Workflow <code>name</code></h4>
-<p class=" paragraph">The name of your workflow. GitHub displays the names of your workflows on your repository&#8217;s actions page.</p>
+<p class=" paragraph">The name of your workflow will be displayed on your repository&#8217;s actions page.</p>
 </div>
 <div class="sect3">
+<h4 id="_workflow_job_or_step_env">Workflow, Job or Step <code>env</code></h4>
+<p class=" paragraph">A map of environment variables which can be set at different scopes. Several environment variables are available by default (<code>GITHUB_EVENT_NAME</code>, <code>GITHUB_EVENT_PATH</code>, <code>GITHUB_SHA</code>, <code>GITHUB_REF</code>, <code>HOME</code>&#8230;&#8203;) as well as a secret, <code>GITHUB_TOKEN</code>, which you can leverage for API calls or git commands through the <code>secrets</code> context.</p>
+</div>
+</div>
+<div class="sect2 column">
+<h3 id="_3">!</h3>
+<div class="sect3">
 <h4 id="_on_event"><code>on</code> Event</h4>
-<p class=" paragraph">The name of the GitHub event that triggers the workflow. You can provide a single event string, an array of events, or an event configuration map that restricts the execution of a workflow:</p>
+<p class=" paragraph">The type event that triggers the workflow. You can provide a single event string, an array of events, or an event configuration map that restricts the execution of a workflow:</p>
 <div class="ulist">
 <ul>
 <li>
-<p>When using the <code>push</code> and <code>pull_request</code> events, <code>branches</code> and <code>tags</code> allow to select or exclude references the workflow will run on, while <code>paths</code> specifies which files must have been modified in order to run the workflow.</p>
+<p>When using the <code>push</code> and <code>pull_request</code> events, <code>branches</code> and <code>tags</code> allow to select or exclude (with the <code>!</code> prefix) git references the workflow will run on, while <code>paths</code> specifies which files must have been modified in order to run the workflow.</p>
 </li>
 <li>
-<p>The <code>types</code> keyword enables you to narrow down activity that causes the workflow to run: <code>created</code>, <code>edited</code>, <code>deleted</code>&#8230;&#8203;
-A workflow trigger can also be scheduled:</p>
+<p>If your rules are only made of exclusions, you can use <code>branches-ignore</code>, <code>tags-ignore</code> and <code>paths-ignore</code>. The <code>-ignore</code> form and its inclusive version cannot be mixed.</p>
+</li>
+<li>
+<p>The <code>types</code> keyword enables you to narrow down activities (<code>opened</code>, <code>created</code>, <code>edited</code>&#8230;&#8203;) causing the workflow to run. The list of available activities depends on the event.</p>
+</li>
+<li>
+<p>A workflow trigger can also be scheduled:</p>
 </li>
 </ul>
 </div>
@@ -67,64 +102,19 @@ A workflow trigger can also be scheduled:</p>
 </div>
 <div class="sect3">
 <h4 id="_jobs_collection"><code>jobs</code> Collection</h4>
-<p class=" paragraph">A workflow run is made up of one or more jobs identified by a <code>job_id</code>. Jobs  run in parallel by default. Each job runs in a fresh instance of the virtual environment specified by <code>runs-on</code>.</p>
+<p class=" paragraph">A workflow run is made up of one or more jobs identified by a unique <code>job_id</code> (<code>my_build</code> or <code>my_job</code>). Jobs run in parallel by default unless queued with the <code>needs</code> attribute. Each job runs in a fresh instance of the virtual environment specified by <code>runs-on</code>.</p>
 <div class="sect4">
-<h5 id="_job_id"><code>job_id</code></h5>
-<p class=" paragraph">The name of the job displayed on GitHub. For example <code>my_build</code> or <code>build</code>. This string is unique with the <code>jobs</code> object.</p>
+<h5 id="_job_name">Job <code>name</code></h5>
+<p class=" paragraph">The name of the job displayed on GitHub.</p>
 </div>
-</div>
-</div>
-<div class="sect2 column">
-<h3 id="_3">!</h3>
 <div class="sect4">
 <h5 id="_needs"><code>needs</code></h5>
 <p class=" paragraph">Identifies any job that must complete successfully before this job will run. It can be a string or array of strings. If a job fails, all jobs that need it are skipped unless the jobs use a conditional statement that causes the job to continue.</p>
 </div>
 <div class="sect4">
 <h5 id="_runs_on"><code>runs-on</code></h5>
-<p class=" paragraph">Inside of the <code>jobs</code> collection, this is the type of virtual host machine to run the job on.
-Available virtual machine types are:</p>
-<div class="ulist">
-<ul>
-<li>
-<p><code>ubuntu-latest</code>, <code>ubuntu-18.04</code>, or <code>ubuntu-16.04</code></p>
-</li>
-<li>
-<p><code>windows-latest</code>, <code>windows-2019</code>, or <code>windows-2016</code></p>
-</li>
-<li>
-<p><code>macOS-latest</code> or <code>macOS-10.14</code></p>
-</li>
-</ul>
+<p class=" paragraph">The type of virtual host machine to run the job on.  Can be either a GitHub or self-hosted runner. Jobs can also run in user-specified containers (see: <code>container</code>). Available GitHub-hosted virtual machine types are <code>ubuntu-latest</code>, <code>windows-latest</code>, <code>macOS-latest</code> plus some other specific versions for each operating system, in the form of <code>ubuntu-xx.xx</code>, <code>macOS-xx.xx</code> or <code>windows-xxxx</code>. To specify a self-hosted runner for your job, configure <code>runs-on</code> in your workflow file with self-hosted runner labels. Example: <code>[self-hosted, linux]</code>.</p>
 </div>
-</div>
-<div class="sect4">
-<h5 id="_container"><code>container</code></h5>
-<p class=" paragraph">Instead of running directly on a host selected with <code>runs-on</code>, a container can run any steps in a job that don&#8217;t already specify a container. If you have steps that use both script and container actions, the container actions will run as sibling containers on the same network with the same volume mounts. This object has the following attributes: <code>image</code>, <code>env</code>, <code>ports</code>, <code>volume</code> and <code>options</code>.</p>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml">...
-jobs:
-  my_job:
-    container:
-      image: node:10.16-jessie
-      env:
-        NODE_ENV: development
-      ports:
-        - 80
-      volumes:
-        - my_docker_volume:/volume_mount
-      options: --cpus 1</code></pre>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_services"><code>services</code></h5>
-<p class=" paragraph">Additional containers to host services for a job in a workflow. These are useful for creating databases or cache services. The runner on the virtual machine will automatically create a network and manage the lifecycle of the service containers. Each service is a named object in the <code>services</code> collection (<code>redis</code> or <code>nginx</code> for example) and can receive the same parameters than the <code>container</code> object.</p>
-</div>
-<div class="sect4">
-<h5 id="_timeout_minutes"><code>timeout-minutes</code></h5>
-<p class=" paragraph">The maximum number of minutes to let a workflow run before GitHub automatically cancels it. Default: 360</p>
 </div>
 </div>
 </div>
@@ -145,6 +135,18 @@ jobs:
 <div class="sectionbody">
 <div class="sect2 column">
 <h3 id="_6">!</h3>
+<div class="sect4">
+<h5 id="_container"><code>container</code></h5>
+<p class=" paragraph">Instead of running directly on a host selected with <code>runs-on</code>, a container can run any steps in a job that don&#8217;t already specify a container. If you have steps that use both script and container actions, the container actions will run as sibling containers on the same network with the same volume mounts. This object has the following attributes: <code>image</code>, <code>env</code>, <code>ports</code>, <code>volume</code> and <code>options</code>.</p>
+</div>
+<div class="sect4">
+<h5 id="_timeout_minutes"><code>timeout-minutes</code></h5>
+<p class=" paragraph">The maximum number of minutes to let a workflow run before GitHub automatically cancels it. Default: 360</p>
+</div>
+<div class="sect4">
+<h5 id="_services"><code>services</code></h5>
+<p class=" paragraph">Additional containers to host services for a job in a workflow. These are useful for creating databases or cache services. The runner on the virtual machine will automatically create a network and manage the lifecycle of the service containers. Each service is a named object in the <code>services</code> collection (<code>redis</code> or <code>nginx</code> for example) and can receive the same parameters than the <code>container</code> object.</p>
+</div>
 <div class="sect3">
 <h4 id="_job_steps">Job <code>steps</code></h4>
 <p class=" paragraph">A job contains a sequence of tasks called <code>steps</code>. Steps can run commands, run setup tasks, or run an action from your repository, a public repository, or an action published in a Docker registry. Each step runs in its own process in the virtual environment and has access to the workspace and filesystem.</p>
@@ -154,76 +156,37 @@ jobs:
 </div>
 <div class="sect4">
 <h5 id="_uses"><code>uses</code></h5>
-<p class=" paragraph">Select an action to run as part of a step in your job. You can use an action defined in the same repository as the workflow, a public repository elsewhere on GitHub, or in a published Docker container image.</p>
-</div>
-<div class="sect4">
-<h5 id="_with"><code>with</code></h5>
-<p class=" paragraph">A map of the input parameters defined by the action. Each input parameter is a key/value pair. Input parameters are prefixed with <code>INPUT_</code>, converted to upper case and set as environment variables: the <code>first_name</code> parameter will be exposed as the <code>INPUT_FIRST_NAME</code> environment variable. Special parameter names are:
-- <code>args</code>, a string that defines the inputs passed to a Docker container&#8217;s <code>ENTRYPOINT</code>. It is used in place of the <code>CMD</code> instruction in a <code>Dockerfile</code>.
-- <code>entrypoint</code>, a string that defines or overrides the executable to run as the Docker container&#8217;s <code>ENTRYPOINT</code>.</p>
-</div>
-<div class="sect4">
-<h5 id="_env"><code>env</code></h5>
-<p class=" paragraph">Sets environment variables for steps to use in the virtual environment.  If you are setting a secret in an environment variable, you must use the <code>secrets</code> context.</p>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml">...
-steps:
-  - name: A cool action
-    uses: actions/bin/sh@master
-    with:
-      entrypoint: /bin/echo
-      args: The ${{ github.event_name }} did it
-    env:
-      last_name: ${{secrets.LASTNAME}}</code></pre>
-</div>
-</div>
-<p class=" paragraph">Default environment variables:</p>
+<p class=" paragraph">Specify an action to run as part of a step in your job. You can use an action defined in the same repository as the workflow, a public repository elsewhere on GitHub, or in a published Docker container image. Including the version of the action you are using by specifying a Git ref, branch, SHA, or Docker tag is strongly recommended:</p>
 <div class="ulist">
 <ul>
 <li>
-<p><code>HOME</code>: Path to the GitHub home directory used to store user data.</p>
+<p><code>uses: {owner}/{repo}@{ref}</code> for actions in a public repository</p>
 </li>
 <li>
-<p><code>GITHUB_WORKFLOW</code>: Name of the workflow.</p>
+<p><code>uses: {owner}/{repo}/{path}@{ref}</code> for actions in a subdirectory of a public repository</p>
 </li>
 <li>
-<p><code>GITHUB_ACTION</code>: Name of the action.</p>
+<p><code>uses: ./path/to/dir</code> for actions in a a subdirectory of the same repository</p>
 </li>
 <li>
-<p><code>GITHUB_ACTOR</code>: Name of the person or app that initiated the workflow.</p>
+<p><code>uses: docker://{image}:{tag}</code> for actions on Docker Hub</p>
 </li>
 <li>
-<p><code>GITHUB_REPOSITORY</code>: Owner and repository name.</p>
-</li>
-<li>
-<p><code>GITHUB_EVENT_NAME</code>: Name of the triggering webhook event.</p>
-</li>
-<li>
-<p><code>GITHUB_EVENT_PATH</code>: Path of the file with the webhook event payload.</p>
-</li>
-<li>
-<p><code>GITHUB_WORKSPACE</code>: GitHub workspace directory path.</p>
-</li>
-<li>
-<p><code>GITHUB_SHA</code>: Commit SHA that triggered the workflow.</p>
-</li>
-<li>
-<p><code>GITHUB_REF</code>: Branch or tag ref that triggered the workflow.</p>
-</li>
-<li>
-<p><code>GITHUB_HEAD_REF</code>: Branch of the head repository (forks only).</p>
-</li>
-<li>
-<p><code>GITHUB_BASE_REF</code>: Branch of the base repository (forks only).</p>
+<p><code>uses: docker://{host}/{image}:{tag}</code> for actions in a public registry</p>
 </li>
 </ul>
 </div>
-<p class=" paragraph">Default secrets:</p>
+</div>
+<div class="sect4">
+<h5 id="_with"><code>with</code></h5>
+<p class=" paragraph">A map of the input parameters defined by the action in its <code>action.yml</code> file. When the acion is container based, special parameter names are:</p>
 <div class="ulist">
 <ul>
 <li>
-<p><code>GITHUB_TOKEN</code>: Token you can leverage for API calls or git commands.</p>
+<p><code>args</code>, a string that defines the inputs passed to a Docker container&#8217;s <code>ENTRYPOINT</code>. It is used in place of the <code>CMD</code> instruction in a <code>Dockerfile</code>.</p>
+</li>
+<li>
+<p><code>entrypoint</code>, a string that defines or overrides the executable to run as the Docker container&#8217;s <code>ENTRYPOINT</code>.</p>
 </li>
 </ul>
 </div>
@@ -233,12 +196,12 @@ steps:
 <div class="sect2 column">
 <h3 id="_7">!</h3>
 <div class="sect4">
-<h5 id="_run"><code>run</code></h5>
-<p class=" paragraph">Instead of running an existing action, a command line program can be run using the operating system&#8217;s shell. Each run keyword represents a new process and shell in the virtual environment. A specific shell can be selected with the <code>shell</code> attribute.</p>
+<h5 id="_if"><code>if</code></h5>
+<p class=" paragraph">Prevents a step from running unless a condition is met. The value is an expression without the <code>${{ &#8230;&#8203; }}</code> block.</p>
 </div>
 <div class="sect4">
-<h5 id="_if"><code>if</code></h5>
-<p class=" paragraph">Prevents a step from running unless a condition is met. The value is an expression without the <code>${{ &#8230;&#8203; }}</code> block</p>
+<h5 id="_run"><code>run</code></h5>
+<p class=" paragraph">Instead of running an existing action, a command line program can be run using the operating system&#8217;s shell. Each run keyword represents a new process and shell in the virtual environment. A specific shell can be selected with the <code>shell</code> attribute. Multiple commands can be run in a single shell instance using the <code>|</code> (pipe) operator.</p>
 </div>
 <div class="sect3">
 <h4 id="_job_strategy">Job <code>strategy</code></h4>
