@@ -226,7 +226,7 @@ steps:
 </div>
 <div class="sect3">
 <h4 id="_context_and_expressions">Context and expressions</h4>
-<p class=" paragraph">Expressions can be used to programmatically set variables in workflow files and access contexts. An expression can be any combination of literal values, references to a context, or functions. You can combine literals, context references, and functions using operators. With the exception of the <code>if</code> key, expressions are written in a <code>${{ &#8230;&#8203; }}</code> block. Contexts are objects providing access to runtime information. The following objects are available:  <code>github</code>, <code>job</code>, <code>steps</code>, <code>runner</code>, <code>secrets</code>, <code>strategy</code> and <code>matrix</code>.</p>
+<p class=" paragraph">Expressions can be used to programmatically set variables in workflow files and access contexts. An expression can be any combination of literal values, references to a context, or functions. You can combine literals, context references, and functions using operators. With the exception of the <code>if</code> key, expressions are written in a <code>${{ &#8230;&#8203; }}</code> block. Contexts are objects providing access to runtime information. The following objects are available: <code>github</code>, <code>job</code>, <code>steps</code>, <code>runner</code>, <code>secrets</code>, <code>strategy</code> and <code>matrix</code>.</p>
 </div>
 <div class="sect3">
 <h4 id="_artifact_storage_caching">Artifact storage &amp; Caching</h4>
@@ -247,7 +247,7 @@ steps:
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml">...
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">- uses: actions/checkout@v1
 - name: Cache node modules
   uses: actions/cache@v1
   with:

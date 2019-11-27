@@ -163,7 +163,7 @@ steps:
 When set to `true` (default value), GitHub cancels all in-progress jobs if any of the matrix job fails.
 
 ==== Context and expressions
-Expressions can be used to programmatically set variables in workflow files and access contexts. An expression can be any combination of literal values, references to a context, or functions. You can combine literals, context references, and functions using operators. With the exception of the `if` key, expressions are written in a `${{ ... }}` block. Contexts are objects providing access to runtime information. The following objects are available:  `github`, `job`, `steps`, `runner`, `secrets`, `strategy` and `matrix`.
+Expressions can be used to programmatically set variables in workflow files and access contexts. An expression can be any combination of literal values, references to a context, or functions. You can combine literals, context references, and functions using operators. With the exception of the `if` key, expressions are written in a `${{ ... }}` block. Contexts are objects providing access to runtime information. The following objects are available: `github`, `job`, `steps`, `runner`, `secrets`, `strategy` and `matrix`.
 
 ==== Artifact storage & Caching
 An artifact is a file or collection of files produced during a workflow run that can be stored and shared between jobs in a workflow run. Use actions `actions/upload-artifact` and `actions/download-artifact` with parameters `name` and `path` to manipulate artifacts. Artifacts can be downloaded through the Web interface for 90 days.
