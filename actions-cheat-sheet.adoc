@@ -9,7 +9,7 @@
 
 [.column]
 === !
-==== Workflow Syntax!!!
+==== Workflow Syntax
 Workflow files use YAML syntax, and must have either a .yml or .yaml file extension. You must store workflow files in the `.github/workflows/` directory of your repository. Each different YAML file corresponds to a different workflow.
 
 [source,yaml]
