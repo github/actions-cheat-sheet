@@ -68,7 +68,7 @@ jobs:
 </div>
 <div class="sect3">
 <h4 id="_workflow_job_or_step_env">Workflow, Job or Step <code>env</code></h4>
-<p class=" paragraph">A map of environment variables which can be set at different scopes. Several environment variables are available by default (<code>GITHUB_EVENT_NAME</code>, <code>GITHUB_EVENT_PATH</code>, <code>GITHUB_SHA</code>, <code>GITHUB_REF</code>, <code>HOME</code>&#8230;&#8203;) as well as a secret, <code>GITHUB_TOKEN</code>, which you can leverage for API calls or git commands through the <code>secrets</code> context.</p>
+<p class=" paragraph">A map of environment variables which can be set at different scopes. Several environment variables are available by default (<code>GITHUB_SHA</code>, <code>GITHUB_REF</code>, <code>GITHUB_EVENT_NAME</code>, <code>HOME</code>, <code>GITHUB_EVENT_PATH</code>&#8230;&#8203;) as well as a secret, <code>GITHUB_TOKEN</code>, which you can leverage for API calls or git commands through the <code>secrets</code> context.</p>
 </div>
 </div>
 <div class="sect2 column">
@@ -191,14 +191,14 @@ jobs:
 </ul>
 </div>
 </div>
-</div>
-</div>
-<div class="sect2 column">
-<h3 id="_7">!</h3>
 <div class="sect4">
 <h5 id="_if"><code>if</code></h5>
 <p class=" paragraph">Prevents a step from running unless a condition is met. The value is an expression without the <code>${{ &#8230;&#8203; }}</code> block.</p>
 </div>
+</div>
+</div>
+<div class="sect2 column">
+<h3 id="_7">!</h3>
 <div class="sect4">
 <h5 id="_run"><code>run</code></h5>
 <p class=" paragraph">Instead of running an existing action, a command line program can be run using the operating system&#8217;s shell. Each run keyword represents a new process and shell in the virtual environment. A specific shell can be selected with the <code>shell</code> attribute. Multiple commands can be run in a single shell instance using the <code>|</code> (pipe) operator.</p>
@@ -226,18 +226,37 @@ steps:
 </div>
 <div class="sect3">
 <h4 id="_context_and_expressions">Context and expressions</h4>
-<p class=" paragraph">Expressions can be used to programmatically set variables in workflow files and access contexts. An expression can be any combination of literal values, references to a context, or functions. You can combine literals, context references, and functions using operators. With the exception of the <code>if</code> key, expressions are written in a <code>${{ &#8230;&#8203; }}</code> block.</p>
-<div class="sect4">
-<h5 id="_contexts">Contexts</h5>
-<p class=" paragraph">Contexts are a way to access runtime information. The following objects are available:  <code>github</code>, <code>job</code>, <code>steps</code>, <code>runner</code>, <code>secrets</code>, <code>strategy</code>, <code>matrix</code>.</p>
+<p class=" paragraph">Expressions can be used to programmatically set variables in workflow files and access contexts. An expression can be any combination of literal values, references to a context, or functions. You can combine literals, context references, and functions using operators. With the exception of the <code>if</code> key, expressions are written in a <code>${{ &#8230;&#8203; }}</code> block. Contexts are objects providing access to runtime information. The following objects are available:  <code>github</code>, <code>job</code>, <code>steps</code>, <code>runner</code>, <code>secrets</code>, <code>strategy</code> and <code>matrix</code>.</p>
 </div>
-<div class="sect4">
-<h5 id="_functions">Functions</h5>
-<p class=" paragraph">Functions <code>contains</code>, <code>startsWith</code>, <code>endsWith</code> with arguments <code>(searchString, searchValue)</code>: return true if searchString respectively contains, starts or ends with searchValue. These functions are not case sensitive. Casts values to a string.</p>
-<p class=" paragraph"><code>format(string, replaceValue0, &#8230;&#8203;, replaceValueN)</code>: replaces values (specified using the {N} syntax, where N is an integer) in the <code>string</code>, with the variable <code>replaceValueN</code>.</p>
-<p class=" paragraph"><code>join(element, optionalElem)</code>: all values in <code>element</code> (an array or a string) are concatenated into a string. <code>optionalElem</code> is appended to the end of <code>element</code>.</p>
-<p class=" paragraph"><code>toJSON(value)</code>: returns a pretty-print JSON representation of <code>value</code>.</p>
-<p class=" paragraph"><code>success()</code>, <code>always()</code>, <code>failure()</code> and <code>cancelled()</code>: these status check functions can be used as expressions in <code>if</code> conditionals.</p>
+<div class="sect3">
+<h4 id="_artifact_storage_caching">Artifact storage &amp; Caching</h4>
+<p class=" paragraph">An artifact is a file or collection of files produced during a workflow run that can be stored and shared between jobs in a workflow run. Use actions <code>actions/upload-artifact</code> and <code>actions/download-artifact</code> with parameters <code>name</code> and <code>path</code> to manipulate artifacts. Artifacts can be downloaded through the Web interface for 90 days.</p>
+<p class=" paragraph">For dependencies and other commonly reused files across runs of a given workflow, use the <code>actions/cache</code> action with parameters:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>key</code>: The key used to save and search for a cache.</p>
+</li>
+<li>
+<p><code>path</code>: The file path (absolute or relative to the working directory) on the runner to cache or restore.</p>
+</li>
+<li>
+<p><code>restore-keys</code>: Optional - An ordered list of alternative keys to use for finding the cache if no cache hit occurred for key.</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">...
+- name: Cache node modules
+  uses: actions/cache@v1
+  with:
+    path: node_modules
+    key: x-y-${{hashFiles('**/package-lock.json')}}
+    restore-keys: |
+      x-y-
+      x-</code></pre>
+</div>
 </div>
 </div>
 </div>

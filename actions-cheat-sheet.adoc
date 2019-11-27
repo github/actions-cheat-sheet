@@ -55,7 +55,7 @@ jobs:
 The name of your workflow will be displayed on your repository's actions page.
 
 ==== Workflow, Job or Step `env`
-A map of environment variables which can be set at different scopes. Several environment variables are available by default (`GITHUB_EVENT_NAME`, `GITHUB_EVENT_PATH`, `GITHUB_SHA`, `GITHUB_REF`, `HOME`...) as well as a secret, `GITHUB_TOKEN`, which you can leverage for API calls or git commands through the `secrets` context.
+A map of environment variables which can be set at different scopes. Several environment variables are available by default (`GITHUB_SHA`, `GITHUB_REF`, `GITHUB_EVENT_NAME`, `HOME`, `GITHUB_EVENT_PATH`...) as well as a secret, `GITHUB_TOKEN`, which you can leverage for API calls or git commands through the `secrets` context.
 
 [.column]
 === !
@@ -135,11 +135,11 @@ A map of the input parameters defined by the action in its `action.yml` file. Wh
 
 * `entrypoint`, a string that defines or overrides the executable to run as the Docker container's `ENTRYPOINT`.
 
-[.column]
-=== !
 ===== `if`
 Prevents a step from running unless a condition is met. The value is an expression without the `${{ ... }}` block.
 
+[.column]
+=== !
 ===== `run`
 Instead of running an existing action, a command line program can be run using the operating system's shell. Each run keyword represents a new process and shell in the virtual environment. A specific shell can be selected with the `shell` attribute. Multiple commands can be run in a single shell instance using the `|` (pipe) operator.
 
@@ -163,18 +163,28 @@ steps:
 When set to `true` (default value), GitHub cancels all in-progress jobs if any of the matrix job fails.
 
 ==== Context and expressions
-Expressions can be used to programmatically set variables in workflow files and access contexts. An expression can be any combination of literal values, references to a context, or functions. You can combine literals, context references, and functions using operators. With the exception of the `if` key, expressions are written in a `${{ ... }}` block.
+Expressions can be used to programmatically set variables in workflow files and access contexts. An expression can be any combination of literal values, references to a context, or functions. You can combine literals, context references, and functions using operators. With the exception of the `if` key, expressions are written in a `${{ ... }}` block. Contexts are objects providing access to runtime information. The following objects are available:  `github`, `job`, `steps`, `runner`, `secrets`, `strategy` and `matrix`.
 
-===== Contexts
-Contexts are a way to access runtime information. The following objects are available:  `github`, `job`, `steps`, `runner`, `secrets`, `strategy`, `matrix`.
+==== Artifact storage & Caching
+An artifact is a file or collection of files produced during a workflow run that can be stored and shared between jobs in a workflow run. Use actions `actions/upload-artifact` and `actions/download-artifact` with parameters `name` and `path` to manipulate artifacts. Artifacts can be downloaded through the Web interface for 90 days.
 
-===== Functions
-Functions `contains`, `startsWith`, `endsWith` with arguments `(searchString, searchValue)`: return true if searchString respectively contains, starts or ends with searchValue. These functions are not case sensitive. Casts values to a string.
+For dependencies and other commonly reused files across runs of a given workflow, use the `actions/cache` action with parameters:
 
-`format(string, replaceValue0, ..., replaceValueN)`: replaces values (specified using the {N} syntax, where N is an integer) in the `string`, with the variable `replaceValueN`.
+* `key`: The key used to save and search for a cache.
 
-`join(element, optionalElem)`: all values in `element` (an array or a string) are concatenated into a string. `optionalElem` is appended to the end of `element`.
+* `path`: The file path (absolute or relative to the working directory) on the runner to cache or restore.
 
-`toJSON(value)`: returns a pretty-print JSON representation of `value`.
+* `restore-keys`: Optional - An ordered list of alternative keys to use for finding the cache if no cache hit occurred for key.
 
-`success()`, `always()`, `failure()` and `cancelled()`: these status check functions can be used as expressions in `if` conditionals.
+[source,yaml]
+----
+...
+- name: Cache node modules
+  uses: actions/cache@v1
+  with:
+    path: node_modules
+    key: x-y-${{hashFiles('**/package-lock.json')}}
+    restore-keys: |
+      x-y-
+      x-
+----
