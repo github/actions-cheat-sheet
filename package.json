@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/helaili/actions-cheat-sheet.git"
+    "url": "git+https://github.com/github/actions-cheat-sheet.git"
   },
   "keywords": [
     "github",
@@ -19,9 +19,9 @@
   "author": "Alain Hélaïli",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/helaili/actions-cheat-sheet/issues"
+    "url": "https://github.com/github/actions-cheat-sheet/issues"
   },
-  "homepage": "https://github.com/helaili/actions-cheat-sheet#readme",
+  "homepage": "https://github.com/github/actions-cheat-sheet#readme",
   "dependencies": {
     "@asciidoctor/core": "^2.0.3",
     "asciidoctor-pdf": "^1.0.0-alpha.3"
