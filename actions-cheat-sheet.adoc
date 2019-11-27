@@ -178,7 +178,7 @@ For dependencies and other commonly reused files across runs of a given workflow
 
 [source,yaml]
 ----
-...
+- uses: actions/checkout@v1
 - name: Cache node modules
   uses: actions/cache@v1
   with:
