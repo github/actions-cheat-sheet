@@ -125,6 +125,10 @@ section.content {
   display: flex;
 }
 
+.level1 {
+  margin-top: 10px;
+}
+
 code, .listingblock {
     background-color: lightgrey;
 }
