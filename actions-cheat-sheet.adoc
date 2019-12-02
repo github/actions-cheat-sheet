@@ -9,7 +9,7 @@
 
 [.column]
 === !
-[.level1]
+[.noTopMargin]
 ==== Workflow Syntax
 Workflow files use YAML syntax, and must have either a .yml or .yaml file extension. You must store workflow files in the `.github/workflows/` directory of your repository. Each different YAML file corresponds to a different workflow.
 
@@ -52,17 +52,15 @@ jobs:
           - 6379/tcp
 ----
 
-[.level1]
 ==== Workflow `name`
 The name of your workflow will be displayed on your repository's actions page.
 
-[.level1]
 ==== Workflow, Job or Step `env`
 A map of environment variables which can be set at different scopes. Several environment variables are available by default (`GITHUB_SHA`, `GITHUB_REF`, `GITHUB_EVENT_NAME`, `HOME`, `GITHUB_EVENT_PATH`...) as well as a secret, `GITHUB_TOKEN`, which you can leverage for API calls or git commands through the `secrets` context.
 
 [.column]
 === !
-[.level1]
+[.noTopMargin]
 ==== `on` Event
 The type event that triggers the workflow. You can provide a single event string, an array of events, or an event configuration map that restricts the execution of a workflow:
 
@@ -81,7 +79,6 @@ on:
   - cron: '*/15 * * * *'
 ----
 
-[.level1]
 ==== `jobs` Collection
 A workflow run is made up of one or more jobs identified by a unique `job_id` (`my_build` or `my_job`). Jobs run in parallel by default unless queued with the `needs` attribute. Each job runs in a fresh instance of the virtual environment specified by `runs-on`.
 
@@ -114,7 +111,6 @@ The maximum number of minutes to let a workflow run before GitHub automatically 
 ===== `services`
 Additional containers to host services for a job in a workflow. These are useful for creating databases or cache services. The runner on the virtual machine will automatically create a network and manage the lifecycle of the service containers. Each service is a named object in the `services` collection (`redis` or `nginx` for example) and can receive the same parameters than the `container` object.
 
-[.level1]
 ==== Job `steps`
 A job contains a sequence of tasks called `steps`. Steps can run commands, run setup tasks, or run an action from your repository, a public repository, or an action published in a Docker registry. Each step runs in its own process in the virtual environment and has access to the workspace and filesystem.
 
@@ -149,7 +145,6 @@ Prevents a step from running unless a condition is met. The value is an expressi
 ===== `run`
 Instead of running an existing action, a command line program can be run using the operating system's shell. Each run keyword represents a new process and shell in the virtual environment. A specific shell can be selected with the `shell` attribute. Multiple commands can be run in a single shell instance using the `|` (pipe) operator.
 
-[.level1]
 ==== Job `strategy`
 A build matrix strategy is a set of different configurations of the virtual environment. The job’ set of steps will be executed on each of these configurations. The following exemple specifies 3 nodejs versions on 2 operating systems:
 
@@ -169,11 +164,9 @@ steps:
 ===== `fail-fast`
 When set to `true` (default value), GitHub cancels all in-progress jobs if any of the matrix job fails.
 
-[.level1]
 ==== Context and expressions
 Expressions can be used to programmatically set variables in workflow files and access contexts. An expression can be any combination of literal values, references to a context, or functions. You can combine literals, context references, and functions using operators. With the exception of the `if` key, expressions are written in a `${{ ... }}` block. Contexts are objects providing access to runtime information. The following objects are available: `github`, `job`, `steps`, `runner`, `secrets`, `strategy` and `matrix`.
 
-[.level1]
 ==== Artifact storage & Caching
 An artifact is a file or collection of files produced during a workflow run that can be stored and shared between jobs in a workflow run. Use actions `actions/upload-artifact` and `actions/download-artifact` with parameters `name` and `path` to manipulate artifacts. Artifacts can be downloaded through the Web interface for 90 days.
 

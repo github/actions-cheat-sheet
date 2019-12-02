@@ -28,5 +28,17 @@ module.exports = {
 <section class="content">
 ${node.getContent()}
 </section>
+<section class="footer">
+  <div class="adFootnote">
+    <div class="footerHeadline"><img class="wordmark" src="./theme/assets/github.png"/><span>Enterprise</span></div>
+    <div class="subNote">Bring GitHub to work, on-premises or in the cloud</div>
+    <div class="subNote">https://enterprise.gitub.com</div>
+  </div>
+  <div class="helpFootnote">
+      <br>Find Actions on GitHub Marketplace at github.com/marketplace<br>
+      Read about GitHub Actions at help.github.com/actions<br>
+      Join a GitHub Learning Lab course at lab.github.com<br>
+  </div>
+</section>
 </body>`
 }
