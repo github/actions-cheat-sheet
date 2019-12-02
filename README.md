@@ -7,7 +7,7 @@ You can checkout the current GitHub Actions Cheat Sheet (2-pager) in [HTML forma
 
 ## Build on your machine
 
-
+It's easy :
 
 ```
 npm install
