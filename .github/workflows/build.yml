@@ -16,6 +16,11 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@0b496e91ec7ae4428c3ed2eeb4c3a40df431f2cc
+    - name: Install fonts
+      run: |
+        mkdir ~/.fonts
+        cp theme/fonts/*.otf ~/.fonts
+        fc-cache -f -v 
     - name: Setup Node
       uses: actions/setup-node@v1
     - name: Cache node modules

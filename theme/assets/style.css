@@ -120,23 +120,30 @@ section.content {
 .sectionbody {
   position: relative;
   margin: 0.5cm;
+  margin-bottom: 0cm;
   width: 20cm;
   align-self: center;
   display: flex;
 }
 
-.level1 {
+.sect3 {
   margin-top: 10px;
 }
 
+.noTopMargin {
+  margin-top: 0px;
+}
+
+
 code, .listingblock {
-    background-color: lightgrey;
+  background-color: lightgrey;
 }
 
 .column {
   position: relative;
   margin: 0;
   padding: 10px;
+  padding-top: 0px;
   width: 10cm;
 }
 
@@ -170,7 +177,7 @@ code, .listingblock {
 }
 
 .header-nth .sectionbody {
-  padding-top: 10px;
+  margin-bottom: 0.5cm;
 }
 
 .header-nth p {
@@ -181,8 +188,66 @@ code, .listingblock {
   padding-top: 1px;
 }
 
+section.footer {
+  position: relative;
+  height: 85px;
+  width: 100%;
+  color: white;
+  background-color: #1C3260;
+  display: flex;
+  align-items: center;
+}
+
+.adFootnote {
+  flex: 0 1 50%;
+  max-width: 50%;
+  margin-left: 0.5cm;
+}
+
+.helpFootnote {
+  display: flex;
+  flex: 0 1 50%;
+  flex-direction: column;
+  max-width: 50%;
+  margin-right: 0.5cm;
+  font-size: 8pt;
+}
+
+.helpFootnote ul {
+  list-style-type: none;
+}
+
+.adFootnote .footerHeadline {
+  display: flex;
+  align-items: center;
+}
+
+
+.adFootnote .footerHeadline img {
+  height: 30px;
+}
+
+
+.adFootnote .footerHeadline span {
+  font-family: 'Inter UI';
+  font-size: 14pt;
+  font-weight: bold;
+}
+
+.adFootnote .subNote {
+  padding-left: 6px;
+}
+
 
 /*
+.helpFootnote li:nth-of-type(1) {
+  padding: 5px 0px 5px 0px;
+}
+
+.helpFootnote li:nth-of-type(n+2) {
+  padding: 0px 0px 5px 0px;
+}
+
 .header-nth .sectionbody::before {
   content:url('github.png');
   display: inline-flex;
