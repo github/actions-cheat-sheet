@@ -32,7 +32,7 @@ ${node.getContent()}
   <div class="adFootnote">
     <div class="footerHeadline"><img class="wordmark" src="./theme/assets/github.png"/><span>Enterprise</span></div>
     <div class="subNote">Bring GitHub to work, on-premises or in the cloud</div>
-    <div class="subNote">https://enterprise.gitub.com</div>
+    <div class="subNote">https://enterprise.github.com</div>
   </div>
   <div class="helpFootnote">
       <br>Find Actions on GitHub Marketplace at github.com/marketplace<br>
