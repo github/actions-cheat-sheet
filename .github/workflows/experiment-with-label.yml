@@ -10,4 +10,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Run a one-line script
-      run: echo Hello, ${message}!
+      run: echo "Hello, ${message}!"
