@@ -131,7 +131,7 @@ Specify an action to run as part of a step in your job. You can use an action de
 * `uses: docker://{host}/{image}:{tag}` for actions in a public registry
 
 ===== `with`
-A map of the input parameters defined by the action in its `action.yml` file. When the acion is container based, special parameter names are:
+A map of the input parameters defined by the action in its `action.yml` file. When the action is container based, special parameter names are:
 
 * `args`, a string that defines the inputs passed to a Docker container's `ENTRYPOINT`. It is used in place of the `CMD` instruction in a `Dockerfile`.
 
@@ -146,7 +146,7 @@ Prevents a step from running unless a condition is met. The value is an expressi
 Instead of running an existing action, a command line program can be run using the operating system's shell. Each run keyword represents a new process and shell in the virtual environment. A specific shell can be selected with the `shell` attribute. Multiple commands can be run in a single shell instance using the `|` (pipe) operator.
 
 ==== Job `strategy`
-A build matrix strategy is a set of different configurations of the virtual environment. The job’ set of steps will be executed on each of these configurations. The following exemple specifies 3 nodejs versions on 2 operating systems:
+A build matrix strategy is a set of different configurations of the virtual environment. The job’ set of steps will be executed on each of these configurations. The following example specifies 3 nodejs versions on 2 operating systems:
 
 [source,yaml]
 ----
